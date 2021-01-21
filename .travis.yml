@@ -6,5 +6,17 @@ services:
 before_install:
   - docker build -t emersonmoizes/docker-react -f Dockerfile.dev .
 
-script:
-  - docker run emersonmoizes/docker-react npm run test -- --coverage
+#script:
+#  - docker run -e CI=true emersonmoizes/docker-react npm run test -- --coverage
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker"
+  env: "docker-env-web"
+  bucket_name: "elasticbeanstalk-us-east-2-363777033436"
+  bucket_path: "docker"
+  on:
+    branch: master
+  access_key_id: $aws_access_key
+  secret_access_key: $aws_secret_key
